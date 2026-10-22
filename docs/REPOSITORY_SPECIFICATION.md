@@ -1,6 +1,6 @@
 # Repository specification: aether-ai-plugins
 
-**Status:** Documentation baseline copied from the Aether AI master specification. Implementation status must be verified separately.
+**Status:** Repository exists; documentation-only on the inspected `main` branch. No application implementation is present in the audited tree.
 
 ## Mission
 
@@ -8,7 +8,7 @@ Plugin manifest, discovery, versioning, enable/disable lifecycle, and compatibil
 
 ## Dependencies and connections
 
-Tools, auth, security, admin.
+aether-ai-tools, aether-ai-auth, and aether-ai-security.
 
 ## Owned capabilities
 

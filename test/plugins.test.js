@@ -31,3 +31,10 @@ test("intersects requested capabilities with user-approved grants", () => {
 test("rejects malformed endpoint identifiers and duplicate endpoint IDs", () => {
   assert.throws(() => validatePluginManifest({ ...manifest, endpoints: [{ id: "same", url: "https://a.example.com" }, { id: "same", url: "https://b.example.com" }] }), PluginManifestError);
 });
+
+
+test("rejects IP literals and local-only endpoint names", () => {
+  for (const url of ["https://127.0.0.1/admin", "https://localhost/admin", "https://service.internal/api"]) {
+    assert.throws(() => validatePluginManifest({ ...manifest, endpoints: [{ id: "e", url }] }), (e) => e.code === "unsafe_endpoint_url");
+  }
+});

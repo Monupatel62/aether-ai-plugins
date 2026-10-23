@@ -1,3 +1,4 @@
+import { isIP } from "node:net";
 const ID = /^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$/;
 const VERSION = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-[0-9A-Za-z.-]+)?(?:\+[0-9A-Za-z.-]+)?$/;
 const CAPABILITIES = new Set(["chat", "tools", "files.read", "files.write", "knowledge.read", "events.receive"]);
@@ -22,7 +23,10 @@ export function validatePluginManifest(input, { allowedHosts } = {}) {
     if (!isRecord(endpoint) || !validId(endpoint.id) || typeof endpoint.url !== "string") throw new PluginManifestError("invalid_endpoint");
     let url;
     try { url = new URL(endpoint.url); } catch { throw new PluginManifestError("invalid_endpoint_url"); }
-    if (url.protocol !== "https:" || url.username || url.password || url.hash || url.search) throw new PluginManifestError("unsafe_endpoint_url");
+    const hostname = url.hostname.toLowerCase().replace("[", "").replace("]", "");
+    if (url.protocol !== "https:" || url.username || url.password || url.hash || url.search || isIP(hostname)
+      || hostname === "localhost" || hostname.endsWith(".localhost") || hostname.endsWith(".local")
+      || hostname.endsWith(".internal") || hostname.endsWith(".test")) throw new PluginManifestError("unsafe_endpoint_url");
     if (hosts && !hosts.has(url.hostname)) throw new PluginManifestError("untrusted_endpoint_host");
     return Object.freeze({ id: endpoint.id, url: url.toString() });
   });

@@ -32,7 +32,7 @@ export interface PluginManifestIssue {
 }
 
 const IDENTIFIER = /^[a-zA-Z0-9][a-zA-Z0-9._-]{0,127}$/;
-const SEMVER = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-[0-9A-Za-z.-]+)?$/;
+const SEMVER = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/;
 
 export function validatePluginManifest(manifest: PluginManifestV1): readonly PluginManifestIssue[] {
   const issues: PluginManifestIssue[] = [];
